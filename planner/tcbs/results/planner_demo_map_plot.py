@@ -3,10 +3,10 @@ import random
 
 import numpy as np
 
-from planner.tcbs.plan import plan_cbsext
+from planner.tcbs.plan import plan as plan_cbsext, generate_config
 from tools import load_map
 
-_map = load_map('map.png')
+_map = load_map('planner/map.png')
 grid = np.repeat(_map[:, :, np.newaxis], 100, axis=2)
 
 landmarks = [(1, 1),
@@ -52,5 +52,7 @@ while len(agent_pos) < n_a:
         agent_pos.append(a)
 
 start_time = datetime.datetime.now()
-res_agent_job, res_agent_idle, res_paths = plan_cbsext(agent_pos, jobs, [], idle_goals, grid, plot=True,
-                                                       filename='../map_test.pkl')
+
+config = generate_config()
+config["filename_pathsave"] = 'planner/map_test.pkl'
+res_agent_job, res_agent_idle, res_paths = plan_cbsext(agent_pos, jobs, [], idle_goals, grid, plot=True, config=config)
